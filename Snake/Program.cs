@@ -126,7 +126,7 @@ class Program
 
             }
 
-            Console.ForegroundColor =  /* ?? */;
+            Console.ForegroundColor =  ConsoleColor.Red;
 
             Console.WriteLine("Score: " + score);
 
@@ -182,7 +182,7 @@ class Program
 
                     movement = "DOWN";
 
-                // ???
+                break;
 
                 case ConsoleKey.LeftArrow:
 
