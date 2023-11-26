@@ -26,20 +26,6 @@ class Program
 
         Random randomnummer = new Random();
 
-        pixel hoofd = new pixel();
-
-        hoofd.xpos = screenwidth / 2;
-
-        hoofd.ypos = screenheight / 2;
-
-        hoofd.schermkleur = ConsoleColor.Red;
-
-        string movement = "RIGHT";
-
-        List<int> telje = new List<int>();
-
-        int score = 0;
-
         Pixel hoofd = new Pixel();
 
         hoofd.xPos = screenwidth / 2;
@@ -47,6 +33,12 @@ class Program
         hoofd.yPos = screenheight / 2;
 
         hoofd.schermKleur = ConsoleColor.Red;
+
+        string movement = "RIGHT";
+
+        List<int> telje = new List<int>();
+
+        int score = 0;
 
 
 
@@ -330,7 +322,6 @@ public class Obstakel
     
     public int Ypos { get; set;}
 
-    // ?
 
     public ConsoleColor schermKleur { get; set; }
 
