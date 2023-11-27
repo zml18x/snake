@@ -216,7 +216,7 @@ class Program
 
             //Hindernis treffen
 
-            if (hoofd.xPos == obstacleXpos /* ?? */ == obstacleYpos)
+            if (hoofd.xPos == obstacleXpos && hoofd.yPos == obstacleYpos)
 
             {
 
@@ -274,7 +274,7 @@ class Program
 
                     Console.SetCursorPosition(screenwidth / 5, screenheight / 2);
 
-                    //???
+                    Console.WriteLine("Game Over");
 
                     Console.SetCursorPosition(screenwidth / 5, screenheight / 2 + 1);
 
