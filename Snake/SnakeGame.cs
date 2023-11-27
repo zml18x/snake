@@ -7,7 +7,7 @@
         private int Score { get; set; }
         private SnakeHead SnakeHead { get; set; }
         private Fruit Fruit { get; set; }
-        private List<int> SnakeSegments { get; set;}
+        private List<SnakeSegment> SnakeSegments { get; set;}
 
 
 
@@ -17,7 +17,7 @@
             ScreenWidth = screenWidth;
             ScreenHeight = screenHeright;
             Score = 0;
-            SnakeSegments = new List<int>();
+            SnakeSegments = new List<SnakeSegment>();
 
             SnakeHead = new SnakeHead
             {
@@ -71,10 +71,6 @@
             {
                 Console.SetCursorPosition(i, 0);
                 Console.Write("■");
-            }
-
-            for (int i = 0; i < ScreenWidth; i++)
-            {
                 Console.SetCursorPosition(i, ScreenHeight - 1);
                 Console.Write("■");
             }
@@ -83,10 +79,6 @@
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write("■");
-            }
-
-            for (int i = 0; i < ScreenHeight; i++)
-            {
                 Console.SetCursorPosition(ScreenWidth - 1, i);
                 Console.Write("■");
             }
@@ -105,39 +97,67 @@
 
             for (int i = 0; i < SnakeSegments.Count(); i++)
             {         
-                Console.SetCursorPosition(SnakeSegments[i], SnakeSegments[i + 1]);
+                Console.SetCursorPosition(SnakeSegments[i].Xpos, SnakeSegments[i].Ypos);
                 Console.Write(SnakeHead.Character);
             }
 
             Console.SetCursorPosition(SnakeHead.Xpos, SnakeHead.Ypos);
             Console.Write(SnakeHead.Character);
+
+            foreach (var segment in SnakeSegments)
+            {
+                Console.SetCursorPosition(segment.Xpos, segment.Ypos);
+                Console.Write("■");
+            }
         }
 
         private void Move()
         {
             var move = Console.ReadKey().Key;
 
-            if (move == ConsoleKey.UpArrow)
-                SnakeHead.Ypos--;
+            switch (move)
+            {
+                case ConsoleKey.UpArrow:
+                    SnakeHead.Ypos--;
+                    break;
 
-            if (move == ConsoleKey.DownArrow)
-                SnakeHead.Ypos++;
+                case ConsoleKey.DownArrow:
+                    SnakeHead.Ypos++;
+                    break;
 
-            if (move == ConsoleKey.LeftArrow)
-                SnakeHead.Xpos--;
+                case ConsoleKey.LeftArrow:
+                    SnakeHead.Xpos--;
+                    break;
 
-            if (move == ConsoleKey.RightArrow)
-                SnakeHead.Xpos++;
+                case ConsoleKey.RightArrow:
+                    SnakeHead.Xpos++;
+                    break;
+            }
+
+            for (int i = SnakeSegments.Count - 1; i >= 1; i--)
+            {
+                SnakeSegments[i].Xpos = SnakeSegments[i - 1].Xpos;
+                SnakeSegments[i].Ypos = SnakeSegments[i - 1].Ypos;
+            }
+
+            if (SnakeSegments.Count > 0)
+            {
+                SnakeSegments[0].Xpos = SnakeHead.Xpos;
+                SnakeSegments[0].Ypos = SnakeHead.Ypos;
+            }
         }
 
         private void CheckIfEatenFruit()
         {
             if (SnakeHead.Xpos == Fruit.Xpos && SnakeHead.Ypos == Fruit.Ypos)
             {
-                Fruit.Xpos = new Random().Next(1, ScreenWidth-1);
-                Fruit.Ypos = new Random().Next(1, ScreenHeight-1);
-
                 Score++;
+
+                SnakeSegment newSegment = new SnakeSegment(Fruit.Xpos, Fruit.Ypos);
+                SnakeSegments.Insert(0, newSegment);
+
+                Fruit.Xpos = new Random().Next(1, ScreenWidth - 1);
+                Fruit.Ypos = new Random().Next(1, ScreenHeight - 1);
             }
         }
 
@@ -145,10 +165,6 @@
         {
             if (SnakeHead.Xpos == 0 || SnakeHead.Xpos == ScreenWidth - 1 || SnakeHead.Ypos == 0 || SnakeHead.Ypos == ScreenHeight - 1)
                 GameOver();
-
-            for (int i = 0; i < SnakeSegments.Count(); i += 2)
-                if (SnakeHead.Xpos == SnakeSegments[i] && SnakeHead.Ypos == SnakeSegments[i + 1])
-                    GameOver();
         }
 
         private void GameOver()
